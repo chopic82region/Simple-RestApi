@@ -1,6 +1,7 @@
 package music
 
 import (
+	"encoding/json"
 	"errors"
 	"time"
 )
@@ -10,11 +11,20 @@ type ErrMessage struct {
 	Time  time.Time
 }
 
-func NewErrMessage(err string) ErrMessage {
-	return ErrMessage{
-		Error: errors.New(err),
+func NewErrMessage(err error) *ErrMessage {
+	return &ErrMessage{
+		Error: err,
 		Time:  time.Now(),
 	}
+}
+
+func (e ErrMessage) ErrToString() string {
+	b, err := json.MarshalIndent(e, "", "	")
+	if err != nil {
+		panic(nil)
+	}
+
+	return string(b)
 }
 
 var ErrMusicNotFound = errors.New("Music not founded...")

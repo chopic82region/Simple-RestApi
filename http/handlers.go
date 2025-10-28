@@ -1,18 +1,49 @@
 package http
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"rest_api/music"
 )
 
 type HttpHandler struct {
-	musicPlaylist music.Pla
+	musicPlaylist music.Playlist
+}
+
+func NewHttpHandler(p music.Playlist) *HttpHandler {
+	return &HttpHandler{
+		musicPlaylist: p,
+	}
 }
 
 // Pattern: /music
 // Method: /POST
 // Response status: 201, 400, 500
 func HandleAddMusic(w http.ResponseWriter, r *http.Request) {
+
+	var song music.Music
+
+	if err := json.NewDecoder(r.Body).Decode(&song); err != nil {
+		er := music.NewErrMessage(err)
+		http.Error(w, er.ErrToString(), http.StatusBadRequest)
+		return
+	}
+
+	if err := song.IsValidate(); err != nil {
+		er := music.NewErrMessage(err)
+		http.Error(w, er.ErrToString(), http.StatusBadRequest)
+		return
+	}
+
+	b, err := json.MarshalIndent(song, "", "	")
+	if err != nil {
+		panic(err)
+	}
+
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("Error of write http response")
+	}
 
 }
 
