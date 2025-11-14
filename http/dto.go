@@ -7,8 +7,8 @@ import (
 )
 
 type MusicDTO struct {
-	Name   string
-	Author string
+	Name   string `json: "Name"`
+	Author string `json: "Autor"`
 }
 
 func (m MusicDTO) IsValidate() error {

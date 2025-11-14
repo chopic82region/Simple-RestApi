@@ -8,5 +8,11 @@ type Music struct {
 }
 
 func NewMusic(name string, author string) Music {
-	music := Music{}
+	return Music{
+		Title:  name,
+		Author: author,
+
+		Downloaded: false,
+	}
+
 }

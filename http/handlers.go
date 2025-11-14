@@ -11,12 +11,12 @@ import (
 )
 
 type HttpHandler struct {
-	musicPlaylist music.Playlist
+	musicPlaylist *music.Playlist
 }
 
-func NewHttpHandler(p music.Playlist) *HttpHandler {
+func NewHttpHandler(playlist *music.Playlist) *HttpHandler {
 	return &HttpHandler{
-		musicPlaylist: p,
+		musicPlaylist: playlist,
 	}
 }
 
